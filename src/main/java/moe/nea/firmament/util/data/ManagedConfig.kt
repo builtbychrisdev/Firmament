@@ -272,7 +272,7 @@ abstract class ManagedConfig(
 			PanelComponent(
 				ScrollPanelComponent(400, 300, ColumnComponent(guiapp.panel)),
 				10,
-				PanelComponent.DefaultBackgroundRenderer.VANILLA
+				PanelComponent.DefaultBackgroundRenderer.DARK_RECT
 			)
 		)
 		screen = object : MoulConfigScreenComponent(Component.empty(), GuiContext(component), parent) {

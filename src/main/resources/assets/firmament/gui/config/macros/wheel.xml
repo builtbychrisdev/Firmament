@@ -7,7 +7,7 @@
 				<Align horizontal="CENTER">
 					<Array data="@wheels">
 						<Panel background="TRANSPARENT" insets="3">
-							<Panel background="VANILLA" insets="6">
+							<Panel background="DARK_RECT" insets="6">
 								<Column>
 									<Row>
 										<Text text="@keyCombo" width="250"/>

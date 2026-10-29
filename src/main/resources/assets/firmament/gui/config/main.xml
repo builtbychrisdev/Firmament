@@ -2,13 +2,13 @@
 <Root xmlns="http://notenoughupdates.org/moulconfig"
       xmlns:firm="http://firmament.nea.moe/moulconfig">
     <Center>
-        <Panel background="VANILLA" insets="10">
+        <Panel background="DARK_RECT" insets="10">
             <Column>
                 <Text text="Firmament Config"/>
                 <ScrollPanel width="400" height="300">
                     <Array data="@categories">
                         <firm:Fixed width="380" height="30">
-                            <Panel background="VANILLA">
+                            <Panel background="DARK_RECT">
                                 <Center>
                                     <Row>
                                         <Center>

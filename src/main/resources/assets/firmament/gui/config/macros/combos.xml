@@ -8,7 +8,7 @@
 					<Array data="@actions">
 						<!-- evenBackground="#8B8B8B" oddBackground="#C6C6C6" -->
 						<Panel background="TRANSPARENT" insets="3">
-							<Panel background="VANILLA" insets="6">
+							<Panel background="DARK_RECT" insets="6">
 								<Column>
 									<Row>
 										<Text text="@commandR" width="280"/>
