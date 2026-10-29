@@ -198,7 +198,6 @@ val yaclSourceSet = createIsolatedSourceSet("yacl")
 val wildfireGenderSourceSet = createIsolatedSourceSet("wildfireGender")
 val jadeSourceSet = createIsolatedSourceSet("jade")
 val modmenuSourceSet = createIsolatedSourceSet("modmenu")
-val reiSourceSet = createIsolatedSourceSet("rei")
 val moulconfigSourceSet = createIsolatedSourceSet("moulconfig")
 val irisSourceSet = createIsolatedSourceSet("iris")
 val customTexturesSourceSet = createIsolatedSourceSet("texturePacks", "texturePacks")
@@ -265,9 +264,6 @@ dependencies {
 	(yaclSourceSet.implementationConfigurationName)(libs.yacl)
 
 	// Actual dependencies
-	val reiDeps = libs.rei
-	(reiSourceSet.implementationConfigurationName)(reiDeps.api)
-	(reiSourceSet.implementationConfigurationName)(reiDeps.fabric)
 	implementation(libs.repoparser)
 	shadowMe(libs.repoparser)
 
@@ -286,7 +282,6 @@ dependencies {
 }
 
 loom {
-	clientOnlyMinecraftJar()
 	accessWidenerPath.set(project.file("src/main/resources/firmament.accesswidener"))
 	runs {
 		removeIf { it.name == "server" }
@@ -450,8 +445,7 @@ tasks.processResources {
 		"version" to project.version.toString(),
 		"minecraft_version" to libs.versions.minecraft.get(),
 		"fabric_kotlin_version" to libs.versions.fabric.kotlin.get(),
-		"fabric_api_version" to libs.versions.fabric.api.get(),
-		"rei_version" to libs.versions.rei.get()
+		"fabric_api_version" to libs.versions.fabric.api.get()
 	)
 	replacements.forEach { (key, value) -> inputs.property(key, value) }
 	filesMatching("**/fabric.mod.json") {

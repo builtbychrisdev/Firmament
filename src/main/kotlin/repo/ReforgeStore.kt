@@ -6,7 +6,6 @@ import io.github.moulberry.repo.IReloadable
 import io.github.moulberry.repo.NEURepoFile
 import io.github.moulberry.repo.NEURepository
 import io.github.moulberry.repo.NEURepositoryException
-import io.github.moulberry.repo.data.NEURecipe
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
 import net.minecraft.world.item.Item
@@ -17,11 +16,7 @@ import moe.nea.firmament.util.SkyblockId
 import moe.nea.firmament.util.json.KJsonOps
 import moe.nea.firmament.util.skyblock.ItemType
 
-object ReforgeStore : ExtraRecipeProvider, IReloadable {
-	override fun provideExtraRecipes(): Iterable<NEURecipe> {
-		return emptyList()
-	}
-
+object ReforgeStore : IReloadable {
 	var byType: Map<ItemType, List<Reforge>> = mapOf()
 	var byVanilla: Map<ResourceKey<Item>, List<Reforge>> = mapOf()
 	var byInternalName: Map<SkyblockId, List<Reforge>> = mapOf()

@@ -7,7 +7,6 @@ import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.world.inventory.Slot
 import moe.nea.firmament.annotations.Subscribe
-import moe.nea.firmament.events.HandledScreenPushREIEvent
 
 abstract class CustomGui {
 
@@ -18,11 +17,6 @@ abstract class CustomGui {
 	}
 
 	companion object {
-		@Subscribe
-		fun onExclusionZone(event: HandledScreenPushREIEvent) {
-			val customGui = event.screen.customGui ?: return
-			event.rectangles.addAll(customGui.getBounds())
-		}
 	}
 
 	open fun render(

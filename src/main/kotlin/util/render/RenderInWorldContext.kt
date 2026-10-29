@@ -2,12 +2,10 @@ package moe.nea.firmament.util.render
 
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import util.render.CustomRenderLayers
 import com.mojang.blaze3d.vertex.VertexConsumer
-import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import com.mojang.blaze3d.vertex.PoseStack
-import net.minecraft.client.renderer.rendertype.RenderTypes
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
@@ -17,17 +15,17 @@ import net.minecraft.world.phys.Vec3
 import moe.nea.firmament.events.WorldRenderLastEvent
 import moe.nea.firmament.util.FirmFormatters
 import moe.nea.firmament.util.MC
+import moe.nea.firmament.util.center
 
 @RenderContextDSL
 class RenderInWorldContext private constructor(
 	val matrixStack: PoseStack,
 	private val camera: CameraRenderState,
-	val vertexConsumers: MultiBufferSource.BufferSource,
 ) {
 	fun block(blockPos: BlockPos, color: Int) {
 		matrixStack.pushPose()
 		matrixStack.translate(blockPos.x.toFloat(), blockPos.y.toFloat(), blockPos.z.toFloat())
-		buildCube(matrixStack.last().pose(), vertexConsumers.getBuffer(CustomRenderLayers.COLORED_QUADS), color)
+		buildCube(matrixStack.last().pose(), CustomRenderer.getBuffer(CustomRenderPipelines.COLORED_OMNIPRESENT_QUADS), color)
 		matrixStack.popPose()
 	}
 
@@ -35,13 +33,13 @@ class RenderInWorldContext private constructor(
 		matrixStack.pushPose()
 		matrixStack.translate(aabb.minX, aabb.minY, aabb.minZ)
 		matrixStack.scale(aabb.xsize.toFloat(), aabb.ysize.toFloat(), aabb.zsize.toFloat())
-		buildCube(matrixStack.last().pose(), vertexConsumers.getBuffer(CustomRenderLayers.COLORED_QUADS), color)
+		buildCube(matrixStack.last().pose(), CustomRenderer.getBuffer(CustomRenderPipelines.COLORED_OMNIPRESENT_QUADS), color)
 		matrixStack.popPose()
 	}
 
 	fun sharedVoxelSurface(blocks: Set<BlockPos>, color: Int) {
 		val m = BlockPos.MutableBlockPos()
-		val l = vertexConsumers.getBuffer(CustomRenderLayers.COLORED_QUADS)
+		val l = CustomRenderer.getBuffer(CustomRenderPipelines.COLORED_OMNIPRESENT_QUADS)
 		blocks.forEach {
 			matrixStack.pushPose()
 			matrixStack.translate(it.x.toFloat(), it.y.toFloat(), it.z.toFloat())
@@ -85,9 +83,9 @@ class RenderInWorldContext private constructor(
 
 	fun waypoint(position: BlockPos, vararg label: Component) {
 		text(
-			position.center,
+			position.center(),
 			*label,
-			Component.literal("§e${FirmFormatters.formatDistance(MC.player?.position?.distanceTo(position.center) ?: 42069.0)}"),
+			Component.literal("§e${FirmFormatters.formatDistance(MC.player?.position()?.distanceTo(position.center()) ?: 42069.0)}"),
 			background = 0xAA202020.toInt()
 		)
 	}
@@ -105,7 +103,6 @@ class RenderInWorldContext private constructor(
 		FacingThePlayerContext(this).run(block)
 
 		matrixStack.popPose()
-		vertexConsumers.endLastBatch()
 	}
 
 	fun sprite(position: Vec3, sprite: TextureAtlasSprite, width: Int, height: Int) {
@@ -140,13 +137,12 @@ class RenderInWorldContext private constructor(
 		matrixStack.translate(vec3d.x, vec3d.y, vec3d.z)
 		matrixStack.scale(size, size, size)
 		matrixStack.translate(-.5, -.5, -.5)
-		buildCube(matrixStack.last().pose(), vertexConsumers.getBuffer(CustomRenderLayers.COLORED_QUADS), color)
+		buildCube(matrixStack.last().pose(), CustomRenderer.getBuffer(CustomRenderPipelines.COLORED_OMNIPRESENT_QUADS), color)
 		matrixStack.popPose()
-		vertexConsumers.endBatch()
 	}
 
 	fun wireframeCube(blockPos: BlockPos, lineWidth: Float = 10F) {
-		val buf = vertexConsumers.getBuffer(RenderTypes.LINES)
+		val buf = CustomRenderer.getBuffer(RenderPipelines.LINES)
 		matrixStack.pushPose()
 		// TODO: add color arg to this
 		// TODO: this does not render through blocks (or water layers) anymore
@@ -161,7 +157,6 @@ class RenderInWorldContext private constructor(
 
 		buildWireFrameCube(matrixStack.last(), buf, lineWidth)
 		matrixStack.popPose()
-		vertexConsumers.endBatch()
 	}
 
 	fun line(vararg points: Vec3, color: Int, lineWidth: Float = 10F) {
@@ -174,7 +169,7 @@ class RenderInWorldContext private constructor(
 	}
 
 	fun line(points: List<Vec3>, color: Int, lineWidth: Float = 10F) {
-		val buffer = vertexConsumers.getBuffer(CustomRenderLayers.LINES_NO_DEPTH)
+		val buffer = CustomRenderer.getBuffer(CustomRenderPipelines.OMNIPRESENT_LINES)
 
 		val matrix = matrixStack.last()
 		var lastNormal: Vector3f? = null
@@ -195,7 +190,6 @@ class RenderInWorldContext private constructor(
 				.setNormal(matrix, normal.x, normal.y, normal.z)
 
 		}
-
 	}
 	// TODO: put the favourite icons in front of items again
 
@@ -297,14 +291,12 @@ class RenderInWorldContext private constructor(
 
 			val ctx = RenderInWorldContext(
 				event.matrices,
-				event.camera,
-				event.vertexConsumers
+				event.camera
 			)
 
 			block(ctx)
 
 			event.matrices.popPose()
-			event.vertexConsumers.endBatch()
 		}
 	}
 }

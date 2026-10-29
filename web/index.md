@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "Firmament"
+  name: "Firm"
   tagline: "Reaching for the sky on HyPixel SkyBlock"
   actions:
     - theme: brand
@@ -14,11 +14,10 @@ hero:
       link: https://modrinth.com/resourcepacks?q=firmament
 
 features:
-  - title: Item List
-    details: Firmament has an item list via integration with REI (with our own item list backend coming soon)
+  - title: Storage Overview
+    details: Firm is a client-side SkyBlock utility mod.
   - title: Feature B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
-

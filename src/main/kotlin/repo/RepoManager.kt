@@ -3,23 +3,16 @@ package moe.nea.firmament.repo
 import io.github.moulberry.repo.NEURepository
 import io.github.moulberry.repo.NEURepositoryException
 import io.github.moulberry.repo.data.NEUItem
-import io.github.moulberry.repo.data.NEURecipe
 import io.github.moulberry.repo.data.Rarity
 import java.nio.file.Path
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.minecraft.client.Minecraft
-import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket
-import net.minecraft.world.item.crafting.SelectableRecipe
-import net.minecraft.util.StringRepresentable
 import moe.nea.firmament.Firmament
 import moe.nea.firmament.Firmament.logger
 import moe.nea.firmament.events.ReloadRegistrationEvent
 import moe.nea.firmament.util.ErrorUtil
 import moe.nea.firmament.util.MC
-import moe.nea.firmament.util.MinecraftDispatcher
 import moe.nea.firmament.util.SkyblockId
 import moe.nea.firmament.util.TestUtil
 import moe.nea.firmament.util.data.Config
@@ -39,8 +32,6 @@ object RepoManager {
 			branch = "master"
 			markDirty()
 		}
-		val enableREI by toggle("enable-rei") { true }
-		val disableItemGroups by toggle("disable-item-groups") { true }
 		val reload by button("reload") {
 			markDirty()
 			Firmament.coroutineScope.launch {
@@ -51,29 +42,10 @@ object RepoManager {
 			markDirty()
 			RepoManager.launchAsyncUpdate(true)
 		}
-		val alwaysSuperCraft by toggle("enable-super-craft") { true }
-		var warnForMissingItemListMod by toggle("warn-for-missing-item-list-mod") { true }
-		val perfectRenders by choice("perfect-renders") { PerfectRender.RENDER }
-	}
-
-	enum class PerfectRender(val label: String) : StringRepresentable {
-		NOTHING("nothing"),
-		RENDER("render"),
-		RENDER_AND_TEXT("text"),
-		;
-
-		fun rendersPerfectText() = this == RENDER_AND_TEXT
-		fun rendersPerfectVisuals() = this == RENDER || this == RENDER_AND_TEXT
-
-		override fun getSerializedName(): String = label
 	}
 
 	val currentDownloadedSha by RepoDownloadManager::latestSavedVersionHash
 
-	var recentlyFailedToUpdateItemList = false
-
-	val essenceRecipeProvider = EssenceRecipeProvider()
-	val recipeCache = BetterRepoRecipeCache(essenceRecipeProvider, ReforgeStore)
 	val miningData = MiningRepoData()
 	val overlayData = ModernOverlaysData()
 	val enchantedBookCache = EnchantedBookCache()
@@ -87,44 +59,15 @@ object RepoManager {
 			registerReloadListener(ExpLadders)
 			registerReloadListener(ItemNameLookup)
 			registerReloadListener(ReforgeStore)
-			registerReloadListener(essenceRecipeProvider)
-			registerReloadListener(recipeCache)
 			registerReloadListener(miningData)
 			registerReloadListener(enchantedBookCache)
 			registerReloadListener(enchantData)
 			ReloadRegistrationEvent.publish(ReloadRegistrationEvent(this))
-			registerReloadListener {
-				if (TestUtil.isInTest) return@registerReloadListener
-				Firmament.coroutineScope.launch(MinecraftDispatcher) {
-					if (!trySendClientboundUpdateRecipesPacket()) {
-						logger.warn("Failed to issue a ClientboundUpdateRecipesPacket (to reload REI). This may lead to an outdated item list.")
-						recentlyFailedToUpdateItemList = true
-					}
-				}
-			}
 		}
 	}
 
 	lateinit var neuRepo: NEURepository
 		private set
-
-	fun getAllRecipes() = neuRepo.items.items.values.asSequence().flatMap { it.recipes }
-
-	fun getRecipesFor(skyblockId: SkyblockId): Set<NEURecipe> = recipeCache.recipes[skyblockId] ?: setOf()
-	fun getUsagesFor(skyblockId: SkyblockId): Set<NEURecipe> = recipeCache.usages[skyblockId] ?: setOf()
-
-	private fun trySendClientboundUpdateRecipesPacket(): Boolean {
-		return Minecraft.getInstance().level != null && Minecraft.getInstance().connection?.handleUpdateRecipes(
-			ClientboundUpdateRecipesPacket(mutableMapOf(), SelectableRecipe.SingleInputSet.empty())
-		) != null
-	}
-
-	init {
-		ClientTickEvents.START_LEVEL_TICK.register(ClientTickEvents.StartLevelTick {
-			if (recentlyFailedToUpdateItemList && trySendClientboundUpdateRecipesPacket())
-				recentlyFailedToUpdateItemList = false
-		})
-	}
 
 	fun getNEUItem(skyblockId: SkyblockId): NEUItem? = neuRepo.items.getItemBySkyblockId(skyblockId.neuItem)
 
@@ -213,5 +156,4 @@ object RepoManager {
 		return "${TConfig.username}/${TConfig.reponame}#${TConfig.branch}"
 	}
 
-	fun shouldLoadREI(): Boolean = TConfig.enableREI
 }

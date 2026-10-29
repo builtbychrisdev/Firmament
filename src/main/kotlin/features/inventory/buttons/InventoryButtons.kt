@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component
 import moe.nea.firmament.annotations.Subscribe
 import moe.nea.firmament.events.HandledScreenClickEvent
 import moe.nea.firmament.events.HandledScreenForegroundEvent
-import moe.nea.firmament.events.HandledScreenPushREIEvent
 import moe.nea.firmament.impl.v1.FirmamentAPIImpl
 import moe.nea.firmament.util.MC
 import moe.nea.firmament.util.ScreenUtil
@@ -48,15 +47,6 @@ object InventoryButtons {
 		return DConfig.data.buttons.asSequence().filter(InventoryButton::isValid)
 	}
 
-
-	@Subscribe
-	fun onRectangles(it: HandledScreenPushREIEvent) {
-		val bounds = it.screen.getProperRectangle()
-		for (button in getValidButtons(it.screen)) {
-			val buttonBounds = button.getBounds(bounds)
-			it.block(buttonBounds)
-		}
-	}
 
 	@Subscribe
 	fun onClickScreen(it: HandledScreenClickEvent) {

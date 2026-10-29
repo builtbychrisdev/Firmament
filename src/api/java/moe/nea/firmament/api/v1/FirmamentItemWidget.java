@@ -12,8 +12,6 @@ public interface FirmamentItemWidget {
 	interface Placement {
 		String name();
 
-		Placement ITEM_LIST = () -> "ITEM_LIST";
-		Placement RECIPE_SCREEN = () -> "RECIPE_SCREEN";
 	}
 
 	/**

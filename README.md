@@ -8,14 +8,13 @@ SPDX-License-Identifier: CC0-1.0
 
 <div align="center">
 
-# Firmament
+# Firm
 
 ![firmament logo](./docs/firmament_logo_256_nobg.webp)
 
 <hr>
 
 [![Forum Thread](https://img.shields.io/badge/Forum%20Thread-blue?style=flat-square)](https://hypixel.net/threads/firmament-a-skyblock-mod-for-1-20-1.5446366/)
-[![Discord](https://img.shields.io/discord/1088154030628417616?style=flat-square&logo=discord)](https://discord.gg/64pFP94AWA)
 [![Modrinth](https://img.shields.io/modrinth/dt/IJNUBZ2a?style=flat-square&logo=modrinth)](https://modrinth.com/mod/firmament)
 [![Github Releases](https://img.shields.io/github/downloads/nea89o/Firmament/total?style=flat-square&logo=github)](https://github.com/nea89o/firmament/releases)
 
@@ -24,10 +23,6 @@ SPDX-License-Identifier: CC0-1.0
 
 ## Currently working features
 
-- Item List of all SkyBlock Items
-- Recipe Viewer for Crafting Recipes
-- Recipe Viewer for Forge Recipes
-- ... as well as many more custom recipe types.
 - NPC waypoints
 - A storage overview as well as a full storage overlay
 - A crafting overlay when clicking the "Move Item" plus in a crafting recipe
@@ -43,19 +38,12 @@ SPDX-License-Identifier: CC0-1.0
 
 ## Installation
 
-Firmament needs the following libraries to work:
+Firm needs the following libraries to work:
 
 - [Fabric API](https://modrinth.com/mod/fabric-api)
 - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
  
-As well as (for the item list):
-- 
-- [RoughlyEnoughItems](https://modrinth.com/mod/rei)
-- [Architectury](https://modrinth.com/mod/architectury-api)
-- [Cloth Config](https://modrinth.com/mod/cloth-config)
-
-
-You can download Firmament itself on [Modrinth](https://modrinth.com/mod/firmament) or on
+You can download Firm on [Modrinth](https://modrinth.com/mod/firmament) or on
 [GitHub](https://github.com/romangraef/firmament/releases).
 
 ### Usage
@@ -85,7 +73,7 @@ rejected.)
 
 Contributions are tentatively welcomed. The structure of the mod is probably not really transparent to newcomers, but if
 you are interested, feel free to tackle any [issues](https://github.com/nea89o/Firmament/issues/) or create your own
-features. If you need any help contributing feel free to join the [discord].
+features.
 
 ### Development
 
@@ -100,5 +88,3 @@ For a more complete development guide check out the [contributing guide](./CONTR
 This codebase was originally labeled as "NotEnoughUpdates 1.19". While the author is a maintainer to NEU, this project
 is not affiliated with NEU beyond personal connections. There may still be references to NEU due to old names or
 overlapping features and libraries.
-
-[discord]: https://discord.gg/64pFP94AWA

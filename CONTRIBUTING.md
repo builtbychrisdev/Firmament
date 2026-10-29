@@ -48,5 +48,4 @@ the `[no changelog]` tag inside your commit message body to hide a commit from t
 each feature. Don't worry if you have any problems with your git history, your pull request will history will be
 rewritten to be fixed (but it would help me if you can keep your commit history clean).
 
-[discord]: https://discord.gg/64pFP94AWA
 [jbr]: https://github.com/JetBrains/JetBrainsRuntime/releases/tag/jbr-release-21.0.5b631.16

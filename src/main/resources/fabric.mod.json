@@ -2,8 +2,8 @@
     "schemaVersion": 1,
     "id": "firmament",
     "version": "${version}",
-    "name": "Firmament",
-    "description": "Firmament powered by NEU",
+    "name": "Firm",
+    "description": "Firm powered by NEU",
     "authors": [
         {
             "name": "Linnea Gräf",
@@ -13,7 +13,6 @@
         }
     ],
     "contact": {
-        "discord": "https://discord.gg/64pFP94AWA",
         "sources": "https://github.com/nea89o/Firmament",
 		"modrinth": "https://modrinth.com/mod/firmament"
     },
@@ -32,12 +31,6 @@
             "moe.nea.firmament.Firmament::onClientInitialize",
 			"moe.nea.jarvis.fabric.JarvisMain"
         ],
-        "rei_client": [
-            "moe.nea.firmament.compat.rei.FirmamentReiPlugin"
-        ],
-		"rei_common": [
-			"moe.nea.firmament.compat.rei.FirmamentReiCommonPlugin"
-		],
         "modmenu": [
             "moe.nea.firmament.compat.modmenu.FirmamentModMenuPlugin"
         ],
@@ -57,15 +50,6 @@
         "minecraft": ">=${minecraft_version}"
     },
     "custom": {
-        "modmenu": {
-            "links": {
-                "modmenu.discord": "https://discord.gg/64pFP94AWA"
-            }
-        },
-        "mc-publish": {
-            "dependencies": [
-                "roughlyenoughitems(recommended){modrinth:rei}"
-            ]
-        }
+        "mc-publish": {}
     }
 }

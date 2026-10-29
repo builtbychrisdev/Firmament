@@ -21,7 +21,7 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "Firmament"
+rootProject.name = "Firm"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include("symbols")

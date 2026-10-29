@@ -4,16 +4,13 @@ import java.util.Collections
 import java.util.Optional
 import net.fabricmc.loader.api.FabricLoader
 import kotlin.jvm.optionals.getOrNull
-import net.minecraft.world.item.ItemStack
 import moe.nea.firmament.Firmament
 import moe.nea.firmament.api.v1.FirmamentAPI
 import moe.nea.firmament.api.v1.FirmamentExtension
 import moe.nea.firmament.api.v1.FirmamentItemWidget
-import moe.nea.firmament.features.items.recipes.ItemList
 import moe.nea.firmament.repo.ExpensiveItemCacheApi
 import moe.nea.firmament.util.MC
 import moe.nea.firmament.util.intoOptional
-import moe.nea.firmament.util.mc.RequiresComponents
 
 object FirmamentAPIImpl : FirmamentAPI() {
 	@JvmField
@@ -34,23 +31,6 @@ object FirmamentAPIImpl : FirmamentAPI() {
 			?.getChildAt(xpos, ypos)
 			?.getOrNull()
 		if (widget is FirmamentItemWidget) return widget.intoOptional()
-		val itemListStack = ItemList.findStackUnder(xpos.toInt(), ypos.toInt())
-		if (itemListStack != null)
-			return object : FirmamentItemWidget {
-				override fun getPlacement(): FirmamentItemWidget.Placement {
-					return FirmamentItemWidget.Placement.ITEM_LIST
-				}
-
-				@RequiresComponents
-				override fun getItemStack(): ItemStack {
-					return itemListStack.second.asImmutableItemStack().upgrade()
-				}
-
-				override fun getSkyBlockId(): String {
-					return itemListStack.second.skyblockId.neuItem
-				}
-
-			}.intoOptional()
 		return Optional.empty()
 	}
 

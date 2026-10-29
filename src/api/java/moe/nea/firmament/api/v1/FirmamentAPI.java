@@ -36,7 +36,7 @@ public abstract class FirmamentAPI {
 	public abstract List<? extends FirmamentExtension> getExtensions();
 
 	/**
-	 * Obtain a reference to the currently hovered item widget, which may be either in the item list or placed in a UI.
+	 * Obtain a reference to the currently hovered item widget placed in a UI.
 	 * This widget may or may not also be present in the Widgets on the current screen.
 	 *
 	 * @return the currently hovered firmament item widget.

@@ -73,7 +73,7 @@ class StorageOverlayScreen : Screen(Component.literal("")) {
 
 		var scroll: Float = 0F
 		var lastRenderedInnerHeight = 0
-		val searchText = Property.of("") // TODO: sync with REI
+		val searchText = Property.of("")
 
 		fun resetScroll() {
 			if (!StorageOverlay.TConfig.retainScroll) scroll = 0F
